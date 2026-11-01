@@ -1,0 +1,54 @@
+export const UZBEKISTAN_REGIONS = [
+  'Toshkent shahri',
+  'Toshkent viloyati',
+  'Samarqand viloyati',
+  'Buxoro viloyati',
+  'Farg‘ona viloyati',
+  'Andijon viloyati',
+  'Namangan viloyati',
+  'Qashqadaryo viloyati',
+  'Surxondaryo viloyati',
+  'Xorazm viloyati',
+  'Navoiy viloyati',
+  'Jizzax viloyati',
+  'Sirdaryo viloyati',
+  'Qoraqalpog‘iston Respublikasi',
+] as const;
+
+export function formatUzs(amount: number): string {
+  if (amount === null || amount === undefined || isNaN(Number(amount))) return "0 so'm";
+  const num = Math.round(Number(amount));
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " so'm";
+}
+
+export function formatDateTime(dateStr: string): string {
+  try {
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat('uz-UZ', {
+      timeZone: 'Asia/Tashkent',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
+  } catch {
+    return dateStr;
+  }
+}
+
+export function validateUzbekPhone(phone: string): boolean {
+  // Normalize by stripping spaces, parentheses, dashes
+  const cleaned = phone.replace(/[\s\(\)\-]/g, '');
+  // Matches +998 followed by 9 digits or 998 followed by 9 digits
+  const uzPhoneRegex = /^(\+?998)[0-9]{9}$/;
+  return uzPhoneRegex.test(cleaned);
+}
+
+export function normalizeUzbekPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.startsWith('998') && digits.length === 12) {
+    return `+998 ${digits.slice(3, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 10)} ${digits.slice(10, 12)}`;
+  }
+  return phone;
+}

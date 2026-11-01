@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #FAF9F6;
+  --bg-surface: #FFFFFF;
+  --bg-muted: #F7F5F0;
+  --text-primary: #1E2226;
+  --text-muted: #5C646D;
+  --border-color: rgba(30, 34, 38, 0.08);
+  --gold-accent: #B89B65;
+  --gold-hover: #9E824F;
+}
+
+.dark {
+  --bg-primary: #0D1013;
+  --bg-surface: #161B1F;
+  --bg-muted: #1E242B;
+  --text-primary: #F5F2EB;
+  --text-muted: #9EABB7;
+  --border-color: rgba(245, 242, 235, 0.1);
+  --gold-accent: #C3A875;
+  --gold-hover: #D8C08E;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Luxury Editorial Headings */
+h1, h2, h3, .font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Glassmorphism Navigation */
+.glass-nav {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .glass-nav {
+  background-color: rgba(13, 16, 19, 0.85);
+  border-bottom: 1px solid rgba(195, 168, 117, 0.15);
+}
+
+.glass-nav {
+  background-color: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(184, 155, 101, 0.2);
+}
+
+/* Luxury Gold Glow */
+.gold-glow {
+  box-shadow: 0 0 25px rgba(184, 155, 101, 0.2);
+}
+
+.gold-border-subtle {
+  border: 1px solid rgba(184, 155, 101, 0.25);
+}
+
+/* Custom Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(184, 155, 101, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(184, 155, 101, 0.6);
+}
+
+/* Smooth Focus Rings */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--gold-accent);
+  outline-offset: 2px;
+}
