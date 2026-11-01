@@ -14,11 +14,13 @@ import {
   Compass,
   ShieldCheck,
   UserCheck,
+  User,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useTheme } from '@/context/ThemeContext';
 import { useI18n } from '@/context/I18nContext';
+import { useCustomer } from '@/context/CustomerContext';
 import { Language } from '@/lib/i18n/translations';
 
 export default function Navbar() {
@@ -27,6 +29,7 @@ export default function Navbar() {
   const { wishlistCount } = useWishlist();
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useI18n();
+  const { customer, setIsModalOpen: setCustomerModalOpen } = useCustomer();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -63,9 +66,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex justify-between items-center text-[11px] sm:text-xs">
           <div className="flex items-center gap-2 tracking-wider">
             <span className="inline-block w-2 h-2 rounded-full bg-gold-400 animate-pulse-subtle"></span>
-            <span className="font-medium text-gold-300">CHRONOVA CONCIERGE:</span>
-            <span className="hidden sm:inline text-ivory-300">Toshkent bo‘ylab 24 soatda sug‘urtalangan yetkazib berish</span>
-            <span className="sm:hidden text-ivory-300">24 soatda xavfsiz yetkazish</span>
+            <span className="font-medium text-gold-300">CHRONOVA:</span>
+            <span className="text-ivory-300">{t('nav_concierge_bar')}</span>
           </div>
 
           <div className="flex items-center gap-4 text-ivory-300">
@@ -176,6 +178,18 @@ export default function Navbar() {
               )}
             </Link>
 
+            {/* Customer Profile / Sign-in */}
+            <button
+              onClick={() => setCustomerModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium text-graphite-700 dark:text-ivory-300 hover:text-gold-500 hover:bg-gold-500/10 transition-colors border border-transparent hover:border-gold-500/20"
+              aria-label="Mijoz kabineti"
+            >
+              <User className="w-4 h-4 text-gold-500" />
+              <span className="hidden sm:inline font-medium">
+                {customer ? `${t('nav_hello')}, ${customer.firstName}` : t('nav_login')}
+              </span>
+            </button>
+
             {/* Cart Trigger */}
             <button
               onClick={() => setCartOpen(true)}
@@ -184,7 +198,7 @@ export default function Navbar() {
             >
               <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline text-xs font-semibold">
-                {totalItemsCount} dona
+                {totalItemsCount} {t('nav_items_count')}
               </span>
               {totalItemsCount > 0 && (
                 <span className="sm:hidden bg-gold-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -202,7 +216,7 @@ export default function Navbar() {
           <div className="bg-white dark:bg-surface-darkCard w-full max-w-2xl rounded-2xl p-6 shadow-2xl border border-gold-500/30">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-serif text-lg font-semibold text-graphite-900 dark:text-ivory-100">
-                CHRONOVA Butik Qidiruvi
+                {t('search_modal_title')}
               </h3>
               <button
                 onClick={() => setSearchOpen(false)}

@@ -38,7 +38,7 @@ export default function Footer() {
             <div>
               <h4 className="font-serif text-base font-semibold text-ivory-100">{t('concierge_service')}</h4>
               <p className="text-xs text-graphite-400 mt-1 leading-relaxed">
-                Toshkent bo‘ylab 24 soat ichida shaxsiy kuryer orqali xavfsiz va sug‘urtalangan yetkazib berish.
+                {t('footer_prop_concierge_desc')}
               </p>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default function Footer() {
             <div>
               <h4 className="font-serif text-base font-semibold text-ivory-100">{t('swiss_heritage_badge')}</h4>
               <p className="text-xs text-graphite-400 mt-1 leading-relaxed">
-                5 yilgacha xalqaro servis va rasmiy ishlab chiqaruvchi kafolati.
+                {t('footer_prop_warranty_desc')}
               </p>
             </div>
           </div>
@@ -69,33 +69,33 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-xs text-graphite-400 leading-relaxed">
-              CHRONOVA — O‘zbekistondagi Shveytsariya lyuks soatlarining eng nufuzli onlayn butigi. Har bir buyurtma mukammallik bilan yetkaziladi.
+              {t('footer_tagline')}
             </p>
           </div>
 
           {/* Catalog & Brands */}
           <div>
             <h4 className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-4">
-              Kolleksiya
+              {t('footer_col_collection')}
             </h4>
             <ul className="space-y-2.5 text-xs text-graphite-400">
               <li>
-                <Link href="/katalog" className="hover:text-gold-300 transition-colors">Barcha soatlar</Link>
+                <Link href="/katalog" className="hover:text-gold-300 transition-colors">{t('footer_link_all')}</Link>
               </li>
               <li>
-                <Link href="/katalog?cat=klassik" className="hover:text-gold-300 transition-colors">Klassik va Dress</Link>
+                <Link href="/katalog?cat=klassik" className="hover:text-gold-300 transition-colors">{t('footer_link_classic')}</Link>
               </li>
               <li>
-                <Link href="/katalog?cat=xronograf" className="hover:text-gold-300 transition-colors">Xronograflar</Link>
+                <Link href="/katalog?cat=xronograf" className="hover:text-gold-300 transition-colors">{t('footer_link_chrono')}</Link>
               </li>
               <li>
-                <Link href="/katalog?cat=diver" className="hover:text-gold-300 transition-colors">Diver soatlar</Link>
+                <Link href="/katalog?cat=diver" className="hover:text-gold-300 transition-colors">{t('footer_link_diver')}</Link>
               </li>
               <li>
-                <Link href="/katalog?cat=ayollar" className="hover:text-gold-300 transition-colors">Ayollar kolleksiyasi</Link>
+                <Link href="/katalog?cat=ayollar" className="hover:text-gold-300 transition-colors">{t('footer_link_women')}</Link>
               </li>
               <li>
-                <Link href="/brendlar" className="hover:text-gold-300 transition-colors">Shveytsariya brendlari</Link>
+                <Link href="/brendlar" className="hover:text-gold-300 transition-colors">{t('footer_link_brands')}</Link>
               </li>
             </ul>
           </div>
@@ -103,23 +103,23 @@ export default function Footer() {
           {/* Client Service */}
           <div>
             <h4 className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-4">
-              Xizmatlar & Yordam
+              {t('footer_col_service')}
             </h4>
             <ul className="space-y-2.5 text-xs text-graphite-400">
               <li>
-                <Link href="/tracking" className="hover:text-gold-300 transition-colors">Buyurtmani kuzatish</Link>
+                <Link href="/tracking" className="hover:text-gold-300 transition-colors">{t('footer_link_tracking')}</Link>
               </li>
               <li>
-                <Link href="/kafolat-va-yetkazish" className="hover:text-gold-300 transition-colors">Kafolat va Yetkazish</Link>
+                <Link href="/kafolat-va-yetkazish" className="hover:text-gold-300 transition-colors">{t('footer_link_warranty')}</Link>
               </li>
               <li>
-                <Link href="/faq" className="hover:text-gold-300 transition-colors">Ko‘p beriladigan savollar (FAQ)</Link>
+                <Link href="/faq" className="hover:text-gold-300 transition-colors">{t('footer_link_faq')}</Link>
               </li>
               <li>
-                <Link href="/biz-haqimizda" className="hover:text-gold-300 transition-colors">Butik haqida</Link>
+                <Link href="/biz-haqimizda" className="hover:text-gold-300 transition-colors">{t('footer_link_about')}</Link>
               </li>
               <li>
-                <Link href="/aloqa" className="hover:text-gold-300 transition-colors">Biz bilan bog‘lanish</Link>
+                <Link href="/aloqa" className="hover:text-gold-300 transition-colors">{t('footer_link_contact')}</Link>
               </li>
             </ul>
           </div>
@@ -127,12 +127,12 @@ export default function Footer() {
           {/* Showroom Contacts */}
           <div>
             <h4 className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-4">
-              Butik Manzili
+              {t('footer_col_address')}
             </h4>
             <div className="space-y-3 text-xs text-graphite-400">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
-                <span>Toshkent shahri, Amir Temur shoh ko‘chasi, 108</span>
+                <span>{t('footer_address_text')}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-gold-400 flex-shrink-0" />
@@ -142,10 +142,6 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-gold-400 flex-shrink-0" />
                 <a href="mailto:concierge@chronova.uz" className="hover:text-gold-300 font-mono">concierge@chronova.uz</a>
               </div>
-              <div className="pt-2">
-                <span className="text-[11px] text-graphite-500 block">Ish tartibi:</span>
-                <span className="text-[11px] text-ivory-300 font-medium">Har kuni 10:00 — 21:00 (Dam olish kunlarisiz)</span>
-              </div>
             </div>
           </div>
         </div>
@@ -153,7 +149,7 @@ export default function Footer() {
         {/* Bottom copyright & payment methods */}
         <div className="pt-8 border-t border-graphite-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-graphite-500">
           <div>
-            © {new Date().getFullYear()} CHRONOVA Haute Horlogerie. Barcha huquqlar himoyalangan.
+            © {new Date().getFullYear()} CHRONOVA Haute Horlogerie. {t('footer_rights')}
           </div>
           <div className="flex items-center gap-3">
             <span className="px-2 py-0.5 rounded bg-graphite-900 text-ivory-300 text-[10px] font-mono">NAQD</span>

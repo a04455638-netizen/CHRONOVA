@@ -44,6 +44,13 @@ export default function WatchFilters({
 
   const movements = ['Avtomatik', 'Mexanik', 'Kvarts'];
 
+  const getMovementLabel = (m: string) => {
+    if (m === 'Avtomatik') return t('movement_automatic');
+    if (m === 'Mexanik') return t('movement_mechanical');
+    if (m === 'Kvarts') return t('movement_quartz');
+    return m;
+  };
+
   return (
     <div className="bg-white dark:bg-surface-darkCard p-6 rounded-2xl border border-graphite-200 dark:border-graphite-800 space-y-6">
       {/* Header & Reset */}
@@ -51,29 +58,29 @@ export default function WatchFilters({
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gold-500" />
           <h3 className="font-serif text-base font-semibold text-graphite-900 dark:text-ivory-100">
-            Filtrlar
+            {t('filter_title')}
           </h3>
         </div>
         <button
           onClick={onReset}
-          className="text-xs text-graphite-500 hover:text-gold-500 flex items-center gap-1 transition-colors"
+          className="text-xs text-graphite-500 hover:text-gold-500 flex items-center gap-1 transition-colors cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>Tozalash</span>
+          <span>{t('filter_reset')}</span>
         </button>
       </div>
 
       {/* Search Input */}
       <div>
         <label className="block text-xs font-semibold uppercase tracking-wider text-graphite-700 dark:text-ivory-300 mb-2">
-          Qidiruv
+          {t('filter_search_label')}
         </label>
         <div className="relative">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Model yoki nom..."
+            placeholder={t('filter_search_ph')}
             className="w-full bg-ivory-100 dark:bg-surface-dark border border-graphite-300 dark:border-graphite-700 rounded-xl px-3 py-2 pl-9 text-xs focus:outline-none focus:border-gold-500"
           />
           <Search className="w-4 h-4 text-graphite-400 absolute left-3 top-2.5" />
@@ -164,13 +171,13 @@ export default function WatchFilters({
             <button
               key={m}
               onClick={() => setSelectedMovement(m)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                 selectedMovement === m
                   ? 'bg-gold-500 text-white'
                   : 'bg-ivory-100 dark:bg-graphite-800 text-graphite-700 dark:text-ivory-300 hover:bg-gold-500/20'
               }`}
             >
-              {m}
+              {getMovementLabel(m)}
             </button>
           ))}
         </div>

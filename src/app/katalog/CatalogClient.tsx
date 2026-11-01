@@ -93,35 +93,35 @@ export default function CatalogClient({
       {/* Header section */}
       <div className="mb-8">
         <span className="text-xs uppercase tracking-widest text-gold-600 dark:text-gold-400 font-semibold block mb-1">
-          CHRONOVA Kolleksiyasi
+          {t('catalog_badge')}
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-graphite-900 dark:text-ivory-100">
-          Shveytsariya Soatlari Katalogi
+          {t('catalog_title')}
         </h1>
         <p className="text-xs sm:text-sm text-graphite-600 dark:text-ivory-300 mt-2 max-w-2xl">
-          Dunyoning eng mashhur manufakturalarining original modellari. Har bir soat rasmiy sertifikat va qutisi bilan yetkaziladi.
+          {t('catalog_subtitle')}
         </p>
       </div>
 
       {/* Bar: Result count + Sort dropdown + Mobile filter button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-graphite-200 dark:border-graphite-800 gap-4">
         <div className="text-xs text-graphite-600 dark:text-ivory-400">
-          Topildi: <span className="font-bold text-gold-600 dark:text-gold-400">{filteredProducts.length}</span> ta model
+          <span className="font-bold text-gold-600 dark:text-gold-400">{filteredProducts.length}</span> {t('catalog_results_found')}
         </div>
 
         <div className="flex items-center gap-3">
           {/* Mobile Filter Trigger */}
           <button
             onClick={() => setMobileFilterOpen(true)}
-            className="lg:hidden px-4 py-2 rounded-xl bg-ivory-200 dark:bg-graphite-800 text-graphite-800 dark:text-ivory-200 text-xs font-semibold flex items-center gap-2"
+            className="lg:hidden px-4 py-2 rounded-xl bg-ivory-200 dark:bg-graphite-800 text-graphite-800 dark:text-ivory-200 text-xs font-semibold flex items-center gap-2 cursor-pointer"
           >
             <SlidersHorizontal className="w-4 h-4 text-gold-500" />
-            <span>Filtrlar</span>
+            <span>{t('filter_title')}</span>
           </button>
 
           {/* Sort selector */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-graphite-500 hidden sm:inline">Saralash:</span>
+            <span className="text-xs text-graphite-500 hidden sm:inline">{t('catalog_sort_label')}</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
@@ -183,9 +183,9 @@ export default function CatalogClient({
               />
               <button
                 onClick={() => setMobileFilterOpen(false)}
-                className="w-full mt-6 py-3 rounded-xl bg-gold-500 text-white font-semibold text-xs uppercase"
+                className="w-full mt-6 py-3 rounded-xl bg-gold-500 text-white font-semibold text-xs uppercase cursor-pointer"
               >
-                Natijalarni ko‘rish ({filteredProducts.length})
+                {t('catalog_show_results')} ({filteredProducts.length})
               </button>
             </div>
           </div>
@@ -199,16 +199,16 @@ export default function CatalogClient({
                 <PackageSearch className="w-8 h-8" />
               </div>
               <h3 className="font-serif text-xl font-bold text-graphite-900 dark:text-ivory-100 mb-2">
-                Mos soatlar topilmadi
+                {t('catalog_no_products')}
               </h3>
               <p className="text-xs text-graphite-500 dark:text-ivory-400 max-w-md mx-auto mb-6">
-                Qidiruv so‘rovingiz yoki tanlangan filtrlar bo‘yicha hech narsa chiqmadi. Filtr parametrlarini o‘zgartirib ko‘ring.
+                {t('catalog_no_products_desc')}
               </p>
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-semibold uppercase tracking-wider transition-colors"
+                className="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
               >
-                Filtrlarni tozalash
+                {t('catalog_reset_btn')}
               </button>
             </div>
           ) : (

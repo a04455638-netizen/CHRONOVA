@@ -38,15 +38,20 @@ export function formatDateTime(dateStr: string): string {
 }
 
 export function validateUzbekPhone(phone: string): boolean {
-  // Normalize by stripping spaces, parentheses, dashes
-  const cleaned = phone.replace(/[\s\(\)\-]/g, '');
-  // Matches +998 followed by 9 digits or 998 followed by 9 digits
-  const uzPhoneRegex = /^(\+?998)[0-9]{9}$/;
-  return uzPhoneRegex.test(cleaned);
+  if (!phone) return false;
+  // Normalize by stripping non-digit characters
+  const digits = phone.replace(/\D/g, '');
+  // Matches 9 digits (e.g. 901234567) or 12 digits starting with 998 (e.g. 998901234567)
+  if (digits.length === 9) return true;
+  if (digits.length === 12 && digits.startsWith('998')) return true;
+  return false;
 }
 
 export function normalizeUzbekPhone(phone: string): string {
   const digits = phone.replace(/\D/g, '');
+  if (digits.length === 9) {
+    return `+998 ${digits.slice(0, 2)} ${digits.slice(2, 5)} ${digits.slice(5, 7)} ${digits.slice(7, 9)}`;
+  }
   if (digits.startsWith('998') && digits.length === 12) {
     return `+998 ${digits.slice(3, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 10)} ${digits.slice(10, 12)}`;
   }

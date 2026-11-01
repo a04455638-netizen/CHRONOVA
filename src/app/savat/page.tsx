@@ -48,17 +48,17 @@ export default function CartPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-graphite-500 dark:text-ivory-400 mb-6">
-        <Link href="/" className="hover:text-gold-500 transition-colors">Bosh sahifa</Link>
+        <Link href="/" className="hover:text-gold-500 transition-colors">{t('not_found_home_btn')}</Link>
         <ChevronRight className="w-3.5 h-3.5" />
-        <span className="text-graphite-900 dark:text-ivory-100 font-medium">Xarid Savati</span>
+        <span className="text-graphite-900 dark:text-ivory-100 font-medium">{t('cart_page_title')}</span>
       </nav>
 
       <div className="mb-8">
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-graphite-900 dark:text-ivory-100">
-          Xarid Savati
+          {t('cart_page_title')}
         </h1>
         <p className="text-xs sm:text-sm text-graphite-600 dark:text-ivory-300 mt-1">
-          Savatingizda {items.length} ta mahsulot mavjud.
+          {t('cart_page_items_count')}: {items.length} {t('nav_items_count')}
         </p>
       </div>
 
@@ -68,16 +68,16 @@ export default function CartPage() {
             <ShoppingBag className="w-8 h-8" />
           </div>
           <h2 className="font-serif text-2xl font-bold text-graphite-900 dark:text-ivory-100 mb-2">
-            Savatingiz bo‘sh
+            {t('cart_empty')}
           </h2>
           <p className="text-xs sm:text-sm text-graphite-500 dark:text-ivory-400 max-w-md mx-auto mb-6">
-            Katalogimizdagi eng sara Shveytsariya durdonalarini ko‘rib chiqing va o‘zingizga yoqqan soatni tanlang.
+            {t('cart_empty_desc')}
           </p>
           <Link
             href="/katalog"
-            className="px-8 py-3 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-semibold uppercase tracking-wider transition-colors inline-block"
+            className="px-8 py-3 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-semibold uppercase tracking-wider transition-colors inline-block cursor-pointer shadow-luxury"
           >
-            Katalogni ko‘rish
+            {t('hero_cta')}
           </Link>
         </div>
       ) : (
@@ -119,7 +119,7 @@ export default function CartPage() {
                     <div className="flex items-center border border-graphite-300 dark:border-graphite-700 rounded-xl overflow-hidden bg-ivory-50 dark:bg-surface-dark">
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.variant?.id)}
-                        className="px-3 py-1.5 hover:bg-gold-500/10 text-graphite-600 dark:text-ivory-300 text-xs font-bold"
+                        className="px-3 py-1.5 hover:bg-gold-500/10 text-graphite-600 dark:text-ivory-300 text-xs font-bold cursor-pointer"
                       >
                         <Minus className="w-3.5 h-3.5" />
                       </button>
@@ -128,7 +128,7 @@ export default function CartPage() {
                       </span>
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.variant?.id)}
-                        className="px-3 py-1.5 hover:bg-gold-500/10 text-graphite-600 dark:text-ivory-300 text-xs font-bold"
+                        className="px-3 py-1.5 hover:bg-gold-500/10 text-graphite-600 dark:text-ivory-300 text-xs font-bold cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
                       </button>
@@ -140,15 +140,15 @@ export default function CartPage() {
                       </span>
                       {item.quantity > 1 && (
                         <span className="text-[10px] text-graphite-400 font-mono">
-                          {formatUzs(item.selectedPriceUzs)} / dona
+                          {formatUzs(item.selectedPriceUzs)} {t('cart_item_unit')}
                         </span>
                       )}
                     </div>
 
                     <button
                       onClick={() => removeItem(item.product.id, item.variant?.id)}
-                      className="p-2 text-graphite-400 hover:text-red-500 transition-colors"
-                      aria-label="O‘chirish"
+                      className="p-2 text-graphite-400 hover:text-red-500 transition-colors cursor-pointer"
+                      aria-label="Remove"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -162,15 +162,15 @@ export default function CartPage() {
           <div className="lg:col-span-4 space-y-6">
             <div className="p-6 rounded-2xl bg-white dark:bg-surface-darkCard border border-gold-500/20 space-y-4">
               <h3 className="font-serif text-lg font-bold text-graphite-900 dark:text-ivory-100">
-                Buyurtma Hisobi
+                {t('cart_order_summary_title')}
               </h3>
 
               {/* Coupon Form */}
               {appliedCoupon ? (
                 <div className="flex justify-between items-center p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-xs text-green-700 dark:text-green-300">
-                  <span>Kupon qo‘llandi: <b>{appliedCoupon}</b> (-{formatUzs(discountUzs)})</span>
-                  <button onClick={removeCoupon} className="text-xs text-red-500 hover:underline">
-                    Bekor qilish
+                  <span>{t('cart_discount')}: <b>{appliedCoupon}</b> (-{formatUzs(discountUzs)})</span>
+                  <button onClick={removeCoupon} className="text-xs text-red-500 hover:underline cursor-pointer">
+                    {t('filter_reset')}
                   </button>
                 </div>
               ) : (
@@ -179,15 +179,15 @@ export default function CartPage() {
                     type="text"
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
-                    placeholder="Promokod (masalan: CHRONOVA10)"
+                    placeholder={t('promo_code_placeholder')}
                     className="flex-1 bg-ivory-100 dark:bg-surface-dark border border-graphite-300 dark:border-graphite-700 rounded-xl px-3 py-2 text-xs uppercase"
                   />
                   <button
                     type="submit"
                     disabled={couponLoading}
-                    className="px-4 py-2 bg-graphite-900 dark:bg-graphite-800 text-ivory-100 rounded-xl text-xs font-semibold hover:bg-gold-500 hover:text-white transition-colors"
+                    className="px-4 py-2 bg-graphite-900 dark:bg-graphite-800 text-ivory-100 rounded-xl text-xs font-semibold hover:bg-gold-500 hover:text-white transition-colors cursor-pointer"
                   >
-                    Qo‘llash
+                    {t('promo_apply')}
                   </button>
                 </form>
               )}
@@ -196,36 +196,36 @@ export default function CartPage() {
               {/* Breakdown */}
               <div className="space-y-2 text-xs pt-2 border-t border-graphite-200 dark:border-graphite-800">
                 <div className="flex justify-between text-graphite-600 dark:text-ivory-400">
-                  <span>Oraliq summa</span>
+                  <span>{t('cart_subtotal')}</span>
                   <span className="font-mono">{formatUzs(subtotalUzs)}</span>
                 </div>
                 {discountUzs > 0 && (
                   <div className="flex justify-between text-green-600 dark:text-green-400">
-                    <span>Chegirma</span>
+                    <span>{t('cart_discount')}</span>
                     <span className="font-mono">-{formatUzs(discountUzs)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-graphite-600 dark:text-ivory-400">
-                  <span>Sug‘urtalangan yetkazish</span>
-                  <span className="text-gold-600 dark:text-gold-400 font-medium">Bepul</span>
+                  <span>{t('cart_insured_delivery')}</span>
+                  <span className="text-gold-600 dark:text-gold-400 font-medium">{t('cart_delivery_free')}</span>
                 </div>
                 <div className="flex justify-between text-base font-bold text-graphite-900 dark:text-ivory-100 pt-3 border-t border-graphite-200 dark:border-graphite-800">
-                  <span>Jami to‘lov</span>
+                  <span>{t('cart_total')}</span>
                   <span className="text-gold-600 dark:text-gold-400 font-mono">{formatUzs(finalTotal)}</span>
                 </div>
               </div>
 
               <Link
                 href="/checkout"
-                className="w-full py-4 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-luxury transition-all"
+                className="w-full py-4 rounded-xl bg-gold-500 hover:bg-gold-600 active:scale-[0.99] text-white font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-luxury transition-all cursor-pointer"
               >
-                <span>Rasmiylashtirishga O‘tish</span>
+                <span>{t('cart_checkout_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
-              <div className="flex items-center justify-center gap-2 text-[11px] text-graphite-500 dark:text-ivory-400 pt-2">
-                <ShieldCheck className="w-4 h-4 text-gold-500" />
-                <span>Qabul qilib olganda to‘lov va rasmiy kafolat</span>
+              <div className="flex items-center justify-center gap-2 text-[11px] text-graphite-500 dark:text-ivory-400 pt-2 text-center">
+                <ShieldCheck className="w-4 h-4 text-gold-500 flex-shrink-0" />
+                <span>{t('cart_pay_on_delivery_note')}</span>
               </div>
             </div>
           </div>

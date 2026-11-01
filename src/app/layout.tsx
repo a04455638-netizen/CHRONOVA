@@ -4,9 +4,11 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { I18nProvider } from '@/context/I18nContext';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
+import { CustomerProvider } from '@/context/CustomerContext';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/store/CartDrawer';
+import CustomerModal from '@/components/common/CustomerModal';
 import MaintenanceOverlay from '@/components/common/MaintenanceOverlay';
 
 export const metadata: Metadata = {
@@ -43,17 +45,20 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-surface-light dark:bg-surface-darkMuted text-graphite-900 dark:text-ivory-100 antialiased selection:bg-gold-500 selection:text-white">
         <ThemeProvider>
           <I18nProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <Navbar />
-                <main className="flex-1">
-                  {children}
-                </main>
-                <CartDrawer />
-                <MaintenanceOverlay />
-                <Footer />
-              </CartProvider>
-            </WishlistProvider>
+            <CustomerProvider>
+              <WishlistProvider>
+                <CartProvider>
+                  <Navbar />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                  <CartDrawer />
+                  <CustomerModal />
+                  <MaintenanceOverlay />
+                  <Footer />
+                </CartProvider>
+              </WishlistProvider>
+            </CustomerProvider>
           </I18nProvider>
         </ThemeProvider>
       </body>

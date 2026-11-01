@@ -56,23 +56,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         (item) => item.product.id === product.id && item.variant?.id === variant?.id
       );
 
+      let nextItems: CartItem[];
       if (existingIndex > -1) {
         const updated = [...prev];
         const newQty = Math.min(updated[existingIndex].quantity + quantity, product.stock_quantity);
         updated[existingIndex].quantity = newQty;
-        return updated;
+        nextItems = updated;
+      } else {
+        nextItems = [...prev, { product, variant, quantity, selectedPriceUzs: price }];
       }
 
-      return [...prev, { product, variant, quantity, selectedPriceUzs: price }];
+      try {
+        localStorage.setItem('chronova_cart', JSON.stringify(nextItems));
+      } catch {
+        // ignore
+      }
+
+      return nextItems;
     });
 
     setIsOpen(true);
   };
 
   const removeItem = (productId: string, variantId?: string) => {
-    setItems((prev) =>
-      prev.filter((item) => !(item.product.id === productId && item.variant?.id === variantId))
-    );
+    setItems((prev) => {
+      const next = prev.filter((item) => !(item.product.id === productId && item.variant?.id === variantId));
+      try {
+        localStorage.setItem('chronova_cart', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
   };
 
   const updateQuantity = (productId: string, quantity: number, variantId?: string) => {
@@ -81,21 +94,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    setItems((prev) =>
-      prev.map((item) => {
+    setItems((prev) => {
+      const next = prev.map((item) => {
         if (item.product.id === productId && item.variant?.id === variantId) {
           const maxStock = item.product.stock_quantity;
           return { ...item, quantity: Math.min(quantity, maxStock) };
         }
         return item;
-      })
-    );
+      });
+      try {
+        localStorage.setItem('chronova_cart', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
   };
 
   const clearCart = () => {
     setItems([]);
     setAppliedCoupon(null);
     setDiscountUzs(0);
+    try {
+      localStorage.removeItem('chronova_cart');
+    } catch {}
   };
 
   const subtotalUzs = items.reduce(

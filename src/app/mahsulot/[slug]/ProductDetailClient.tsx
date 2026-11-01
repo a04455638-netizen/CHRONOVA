@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -34,6 +35,7 @@ export default function ProductDetailClient({
   relatedProducts,
   reviews: initialReviews,
 }: ProductDetailClientProps) {
+  const router = useRouter();
   const { addItem } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { t } = useI18n();
@@ -93,16 +95,16 @@ export default function ProductDetailClient({
 
   const handleQuickBuy = () => {
     addItem(product, null, quantity);
-    window.location.href = '/checkout';
+    router.push('/checkout');
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-graphite-500 dark:text-ivory-400 mb-8 overflow-x-auto whitespace-nowrap">
-        <Link href="/" className="hover:text-gold-500 transition-colors">Bosh sahifa</Link>
+        <Link href="/" className="hover:text-gold-500 transition-colors">{t('not_found_home_btn')}</Link>
         <ChevronRight className="w-3.5 h-3.5" />
-        <Link href="/katalog" className="hover:text-gold-500 transition-colors">Katalog</Link>
+        <Link href="/katalog" className="hover:text-gold-500 transition-colors">{t('nav_catalog')}</Link>
         <ChevronRight className="w-3.5 h-3.5" />
         {product.brand && (
           <>
@@ -135,11 +137,11 @@ export default function ProductDetailClient({
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-col gap-2">
               <span className="px-3 py-1 rounded-full bg-gold-500 text-white text-[10px] font-bold uppercase tracking-wider shadow">
-                100% Asl Shveytsariya
+                {t('stat_swiss')}
               </span>
               {hasSale && (
                 <span className="px-3 py-1 rounded-full bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider shadow">
-                  Aksiya
+                  SALE
                 </span>
               )}
             </div>
@@ -152,7 +154,7 @@ export default function ProductDetailClient({
                   ? 'bg-gold-500 text-white'
                   : 'bg-white/80 dark:bg-black/60 text-graphite-800 dark:text-ivory-200 hover:text-gold-500 hover:scale-110'
               }`}
-              aria-label="Sevimlilarga qo'shish"
+              aria-label={t('add_to_wishlist')}
             >
               <Heart className={`w-5 h-5 ${inWishlist ? 'fill-current' : ''}`} />
             </button>
@@ -203,7 +205,7 @@ export default function ProductDetailClient({
                 ))}
               </div>
               <span className="text-xs text-graphite-500 dark:text-ivory-400">
-                (5.0 • {reviews.length} ta sharh)
+                (5.0 • {reviews.length} {t('reviews_count_label')})
               </span>
               <span className="text-graphite-400">•</span>
               <span className="text-xs text-gold-600 dark:text-gold-400 font-medium">
@@ -215,7 +217,7 @@ export default function ProductDetailClient({
           {/* Pricing Box */}
           <div className="p-5 rounded-2xl bg-ivory-100 dark:bg-surface-dark border border-gold-500/20">
             <span className="text-[11px] uppercase tracking-wider text-graphite-500 block mb-1">
-              Rasmiy Chakana Narxi:
+              {t('prod_retail_price')}
             </span>
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-2xl sm:text-3xl font-bold text-graphite-900 dark:text-ivory-100 tracking-tight">
@@ -233,8 +235,8 @@ export default function ProductDetailClient({
               <span className={`inline-block w-2.5 h-2.5 rounded-full ${product.stock_quantity > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
               <span className="font-medium text-graphite-700 dark:text-ivory-200">
                 {product.stock_quantity > 0
-                  ? `Butik omborida mavjud (${product.stock_quantity} dona)`
-                  : 'Hozircha sotuvda tugagan'}
+                  ? `${t('prod_in_stock')} (${product.stock_quantity} ${t('nav_items_count')})`
+                  : t('prod_out_of_stock')}
               </span>
             </div>
           </div>
@@ -268,25 +270,25 @@ export default function ProductDetailClient({
                 {/* Add to Cart */}
                 <button
                   onClick={() => addItem(product, null, quantity)}
-                  className="flex-1 py-3.5 px-6 rounded-xl bg-graphite-900 dark:bg-graphite-800 hover:bg-gold-500 dark:hover:bg-gold-500 text-white text-xs font-semibold uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg transition-all"
+                  className="flex-1 py-3.5 px-6 rounded-xl bg-graphite-900 dark:bg-graphite-800 hover:bg-gold-500 dark:hover:bg-gold-500 text-white text-xs font-semibold uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>Savatga Qo‘shish</span>
+                  <span>{t('prod_add_to_cart')}</span>
                 </button>
               </div>
 
               {/* Instant Checkout Button */}
               <button
                 onClick={handleQuickBuy}
-                className="w-full py-3.5 px-6 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-semibold uppercase tracking-widest flex items-center justify-center gap-2 shadow-luxury hover:shadow-luxury-hover transition-all"
+                className="w-full py-3.5 px-6 rounded-xl bg-gold-500 hover:bg-gold-600 active:scale-[0.99] text-white text-xs font-semibold uppercase tracking-widest flex items-center justify-center gap-2 shadow-luxury hover:shadow-luxury-hover transition-all cursor-pointer"
               >
                 <Zap className="w-4 h-4" />
-                <span>Bir Bosqichda Xarid Qilish</span>
+                <span>{t('prod_quick_buy')}</span>
               </button>
             </div>
           ) : (
             <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs">
-              Ushbu model hozirda sotuvda tugagan. Qayta keltirilishi haqida ma’lumot olish uchun konsyerj xizmatiga murojaat qiling.
+              {t('prod_out_of_stock')}
             </div>
           )}
 
@@ -294,15 +296,15 @@ export default function ProductDetailClient({
           <div className="pt-6 border-t border-graphite-200 dark:border-graphite-800 space-y-3 text-xs text-graphite-600 dark:text-ivory-400">
             <div className="flex items-center gap-3">
               <ShieldCheck className="w-4 h-4 text-gold-500 flex-shrink-0" />
-              <span>{product.warranty_years} Yillik xalqaro manufaktura kafolati</span>
+              <span>{product.warranty_years} {t('prod_warranty_text')}</span>
             </div>
             <div className="flex items-center gap-3">
               <Truck className="w-4 h-4 text-gold-500 flex-shrink-0" />
-              <span>Toshkent bo‘ylab 24 soat ichida bepul sug‘urtalangan yetkazish</span>
+              <span>{t('prod_delivery_text')}</span>
             </div>
             <div className="flex items-center gap-3">
               <RotateCcw className="w-4 h-4 text-gold-500 flex-shrink-0" />
-              <span>Qabul qilib olishda to‘liq ko‘rik va kuryerga xavfsiz to‘lov</span>
+              <span>{t('prod_inspection_text')}</span>
             </div>
           </div>
         </div>
@@ -313,33 +315,33 @@ export default function ProductDetailClient({
         <div className="flex border-b border-graphite-200 dark:border-graphite-800 gap-8">
           <button
             onClick={() => setActiveTab('specs')}
-            className={`pb-4 text-xs uppercase tracking-widest font-semibold transition-colors border-b-2 ${
+            className={`pb-4 text-xs uppercase tracking-widest font-semibold transition-colors border-b-2 cursor-pointer ${
               activeTab === 'specs'
                 ? 'border-gold-500 text-gold-600 dark:text-gold-400'
                 : 'border-transparent text-graphite-500 hover:text-gold-500'
             }`}
           >
-            Texnik Xususiyatlar
+            {t('prod_tab_specs')}
           </button>
           <button
             onClick={() => setActiveTab('delivery')}
-            className={`pb-4 text-xs uppercase tracking-widest font-semibold transition-colors border-b-2 ${
+            className={`pb-4 text-xs uppercase tracking-widest font-semibold transition-colors border-b-2 cursor-pointer ${
               activeTab === 'delivery'
                 ? 'border-gold-500 text-gold-600 dark:text-gold-400'
                 : 'border-transparent text-graphite-500 hover:text-gold-500'
             }`}
           >
-            Yetkazish va Kafolat
+            {t('prod_tab_delivery')}
           </button>
           <button
             onClick={() => setActiveTab('reviews')}
-            className={`pb-4 text-xs uppercase tracking-widest font-semibold transition-colors border-b-2 ${
+            className={`pb-4 text-xs uppercase tracking-widest font-semibold transition-colors border-b-2 cursor-pointer ${
               activeTab === 'reviews'
                 ? 'border-gold-500 text-gold-600 dark:text-gold-400'
                 : 'border-transparent text-graphite-500 hover:text-gold-500'
             }`}
           >
-            Mijozlar Baholari ({reviews.length})
+            {t('prod_tab_reviews')} ({reviews.length})
           </button>
         </div>
 
@@ -348,39 +350,39 @@ export default function ProductDetailClient({
           <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <h3 className="font-serif text-lg font-bold text-graphite-900 dark:text-ivory-100">
-                Asosiy Ko‘rsatkichlar
+                {t('technical_specs')}
               </h3>
               <dl className="divide-y divide-graphite-200 dark:divide-graphite-800 text-xs">
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Brend</dt>
+                  <dt className="text-graphite-500">{t('brand_label')}</dt>
                   <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.brand?.name}</dd>
                 </div>
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Model Raqami</dt>
+                  <dt className="text-graphite-500">{t('model_label')}</dt>
                   <dd className="font-mono font-semibold text-graphite-900 dark:text-ivory-100">{product.model_number}</dd>
                 </div>
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Mexanizm turi</dt>
+                  <dt className="text-graphite-500">{t('movement_label')}</dt>
                   <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.movement_type}</dd>
                 </div>
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Korpus diametri</dt>
+                  <dt className="text-graphite-500">{t('case_size_label')}</dt>
                   <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.case_diameter_mm} mm</dd>
                 </div>
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Korpus materiali</dt>
+                  <dt className="text-graphite-500">{t('case_material_label')}</dt>
                   <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.case_material}</dd>
                 </div>
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Oyna turi</dt>
-                  <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.crystal_type} oynasi</dd>
+                  <dt className="text-graphite-500">{t('glass_label')}</dt>
+                  <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.crystal_type}</dd>
                 </div>
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Suvga chidamlilik</dt>
-                  <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.water_resistance_atm} ATM ({product.water_resistance_atm * 10} metr)</dd>
+                  <dt className="text-graphite-500">{t('waterproof_label')}</dt>
+                  <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.water_resistance_atm} ATM</dd>
                 </div>
                 <div className="py-2.5 flex justify-between">
-                  <dt className="text-graphite-500">Tasma materiali</dt>
+                  <dt className="text-graphite-500">{t('strap_label')}</dt>
                   <dd className="font-semibold text-graphite-900 dark:text-ivory-100">{product.strap_material}</dd>
                 </div>
               </dl>
@@ -389,7 +391,7 @@ export default function ProductDetailClient({
             {/* Custom Specs from DB if available */}
             <div className="space-y-4">
               <h3 className="font-serif text-lg font-bold text-graphite-900 dark:text-ivory-100">
-                Manufaktura Detallari
+                {t('home_heritage_badge')}
               </h3>
               {product.specs && product.specs.length > 0 ? (
                 <dl className="divide-y divide-graphite-200 dark:divide-graphite-800 text-xs">
@@ -401,9 +403,10 @@ export default function ProductDetailClient({
                   ))}
                 </dl>
               ) : (
-                <p className="text-xs text-graphite-500">
-                  Ushbu model Shveytsariya manufaktura standartlariga to‘liq mos keladi.
-                </p>
+                <div className="p-5 rounded-2xl bg-ivory-100 dark:bg-surface-dark border border-gold-500/20 text-xs text-graphite-600 dark:text-ivory-300 space-y-2">
+                  <p className="font-bold text-gold-600 dark:text-gold-400">COSC & Master Chronometer</p>
+                  <p>{t('home_heritage_desc')}</p>
+                </div>
               )}
             </div>
           </div>
@@ -413,16 +416,16 @@ export default function ProductDetailClient({
         {activeTab === 'delivery' && (
           <div className="py-8 max-w-3xl space-y-6 text-xs sm:text-sm text-graphite-600 dark:text-ivory-300 leading-relaxed">
             <h3 className="font-serif text-lg font-bold text-graphite-900 dark:text-ivory-100">
-              CHRONOVA Xizmat Kafolatlari
+              CHRONOVA — {t('authenticity_guarantee')}
             </h3>
             <p>
-              1. <b>100% Asl mahsulot:</b> Har bir soat Shveytsariyaning rasmiy distribyutorlaridan to‘g‘ridan-to‘g‘ri keltiriladi va asl qutisi, xalqaro kafolat kartasi hamda yo‘riqnomasi bilan yetkaziladi.
+              1. <b>{t('authenticity_guarantee')}:</b> {t('authenticity_desc')}
             </p>
             <p>
-              2. <b>Toshkent bo‘ylab kuryerlik:</b> Buyurtmangiz tasdiqlangandan so‘ng 24 soat ichida shaxsiy konsyerj kuryerimiz orqali belgilangan manzilga xavfsiz holatda olib boriladi.
+              2. <b>{t('stat_delivery')}:</b> {t('prod_delivery_text')}.
             </p>
             <p>
-              3. <b>Ko‘rib to‘lash:</b> Siz mahsulotni to‘liq ochib, korpus, siferblat va qutisini ko‘zdan kechirganingizdan keyin kuryerga naqd yoki bank kartasi orqali to‘lov qilasiz.
+              3. <b>{t('chk_secure_note')}:</b> {t('prod_inspection_text')}.
             </p>
           </div>
         )}
@@ -433,10 +436,10 @@ export default function ProductDetailClient({
             {/* Reviews List */}
             <div className="lg:col-span-7 space-y-4">
               <h3 className="font-serif text-lg font-bold text-graphite-900 dark:text-ivory-100">
-                Mijozlarimiz Fikrlari
+                {t('prod_tab_reviews')}
               </h3>
               {reviews.length === 0 ? (
-                <p className="text-xs text-graphite-500 py-4">Hozircha sharhlar yo‘q. Birinchi bo‘lib fikr qoldiring!</p>
+                <p className="text-xs text-graphite-500 py-4">{t('write_review')}</p>
               ) : (
                 reviews.map((rev) => (
                   <div key={rev.id} className="p-4 rounded-xl bg-ivory-100 dark:bg-surface-dark border border-graphite-200 dark:border-graphite-800">
@@ -458,38 +461,37 @@ export default function ProductDetailClient({
             {/* Submit Review Form */}
             <div className="lg:col-span-5 bg-white dark:bg-surface-darkCard p-6 rounded-2xl border border-gold-500/20">
               <h3 className="font-serif text-base font-bold text-graphite-900 dark:text-ivory-100 mb-4">
-                O‘z Fikringizni Qoldiring
+                {t('prod_write_review')}
               </h3>
 
               {reviewSubmitted ? (
                 <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-700 dark:text-green-300 text-xs text-center space-y-1">
                   <CheckCircle2 className="w-6 h-6 text-green-500 mx-auto mb-1" />
-                  <p className="font-bold">Sharhingiz qabul qilindi!</p>
-                  <p className="text-[11px]">Butikimizni tanlaganingiz uchun tashakkur.</p>
+                  <p className="font-bold">{t('prod_review_success')}</p>
                 </div>
               ) : (
                 <form onSubmit={handleReviewSubmit} className="space-y-4 text-xs">
                   <div>
-                    <label className="block text-graphite-600 dark:text-ivory-300 mb-1 font-medium">Ismingiz</label>
+                    <label className="block text-graphite-600 dark:text-ivory-300 mb-1 font-medium">{t('prod_review_name')}</label>
                     <input
                       type="text"
                       required
                       value={reviewerName}
                       onChange={(e) => setReviewerName(e.target.value)}
-                      placeholder="Masalan: Sardor"
+                      placeholder="Aziz"
                       className="w-full bg-ivory-100 dark:bg-surface-dark border border-graphite-300 dark:border-graphite-700 rounded-xl px-3 py-2 text-xs"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-graphite-600 dark:text-ivory-300 mb-1 font-medium">Baho</label>
+                    <label className="block text-graphite-600 dark:text-ivory-300 mb-1 font-medium">Rating</label>
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
                           type="button"
                           key={star}
                           onClick={() => setRating(star)}
-                          className={`p-1 rounded ${rating >= star ? 'text-gold-500' : 'text-gray-400'}`}
+                          className={`p-1 rounded cursor-pointer ${rating >= star ? 'text-gold-500' : 'text-gray-400'}`}
                         >
                           <Star className="w-5 h-5 fill-current" />
                         </button>
@@ -498,22 +500,22 @@ export default function ProductDetailClient({
                   </div>
 
                   <div>
-                    <label className="block text-graphite-600 dark:text-ivory-300 mb-1 font-medium">Fikringiz</label>
+                    <label className="block text-graphite-600 dark:text-ivory-300 mb-1 font-medium">{t('prod_review_comment')}</label>
                     <textarea
                       required
                       rows={3}
                       value={reviewComment}
                       onChange={(e) => setReviewComment(e.target.value)}
-                      placeholder="Soat sifati, kuryer xizmati yoki his-tuyg‘ularingiz haqida..."
+                      placeholder="..."
                       className="w-full bg-ivory-100 dark:bg-surface-dark border border-graphite-300 dark:border-graphite-700 rounded-xl px-3 py-2 text-xs"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-semibold text-xs uppercase tracking-wider transition-colors"
+                    className="w-full py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-semibold text-xs uppercase tracking-wider transition-colors cursor-pointer"
                   >
-                    Yuborish
+                    {t('prod_review_submit')}
                   </button>
                 </form>
               )}
@@ -527,10 +529,10 @@ export default function ProductDetailClient({
         <div className="mt-20 pt-12 border-t border-graphite-200 dark:border-graphite-800">
           <div className="mb-8">
             <span className="text-xs uppercase tracking-widest text-gold-600 dark:text-gold-400 font-semibold block mb-1">
-              Tavsiya Etiladi
+              {t('home_featured_badge')}
             </span>
             <h2 className="font-serif text-2xl font-bold text-graphite-900 dark:text-ivory-100">
-              O‘xshash Durdonalar
+              {t('home_featured_title')}
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

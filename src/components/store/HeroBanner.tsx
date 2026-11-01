@@ -21,12 +21,15 @@ export default function HeroBanner() {
             {/* Micro Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 dark:bg-gold-500/20 border border-gold-500/30 text-gold-700 dark:text-gold-300 text-xs font-semibold uppercase tracking-widest animate-fade-in">
               <Sparkles className="w-3.5 h-3.5 text-gold-500" />
-              <span>Shveytsariya Manufaktura Kolleksiyasi</span>
+              <span>{t('hero_badge')}</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-graphite-900 dark:text-ivory-100 leading-[1.12]">
-              Vaqtning haqiqiy qiymati va <span className="italic font-normal text-gold-600 dark:text-gold-400">nafislik san’ati</span>
+              {t('hero_title_1')}{' '}
+              <span className="italic font-normal text-gold-600 dark:text-gold-400">
+                {t('hero_title_italic')}
+              </span>
             </h1>
 
             {/* Subtitle */}
@@ -55,15 +58,15 @@ export default function HeroBanner() {
             <div className="pt-6 sm:pt-8 grid grid-cols-3 gap-4 border-t border-graphite-200 dark:border-graphite-800/80 text-left">
               <div>
                 <span className="block font-serif text-xl sm:text-2xl font-bold text-graphite-900 dark:text-ivory-100">100%</span>
-                <span className="text-[11px] sm:text-xs text-graphite-500 dark:text-ivory-400">Asl Shveytsariya</span>
+                <span className="text-[11px] sm:text-xs text-graphite-500 dark:text-ivory-400">{t('stat_swiss')}</span>
               </div>
               <div>
                 <span className="block font-serif text-xl sm:text-2xl font-bold text-graphite-900 dark:text-ivory-100">5 Yil</span>
-                <span className="text-[11px] sm:text-xs text-graphite-500 dark:text-ivory-400">Rasmiy Kafolat</span>
+                <span className="text-[11px] sm:text-xs text-graphite-500 dark:text-ivory-400">{t('stat_warranty')}</span>
               </div>
               <div>
                 <span className="block font-serif text-xl sm:text-2xl font-bold text-graphite-900 dark:text-ivory-100">24 Soat</span>
-                <span className="text-[11px] sm:text-xs text-graphite-500 dark:text-ivory-400">Toshkentda Yetkazish</span>
+                <span className="text-[11px] sm:text-xs text-graphite-500 dark:text-ivory-400">{t('stat_delivery')}</span>
               </div>
             </div>
           </div>

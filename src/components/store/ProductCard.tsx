@@ -8,6 +8,7 @@ import { Product } from '@/types';
 import { formatUzs } from '@/lib/utils/format';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
+import { useI18n } from '@/context/I18nContext';
 
 interface ProductCardProps {
   product: Product;
@@ -16,6 +17,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { t } = useI18n();
   const inWishlist = isInWishlist(product.id);
 
   const fallbackImage = '/images/watches/rolex-submariner.jpg';
@@ -52,7 +54,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               ? 'bg-gold-500 text-white'
               : 'bg-white/80 dark:bg-black/60 text-graphite-700 dark:text-ivory-200 hover:text-gold-500 hover:scale-110'
           }`}
-          aria-label="Sevimlilar saqlash"
+          aria-label={t('add_to_wishlist')}
         >
           <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
         </button>
@@ -66,12 +68,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
           {product.is_featured && !hasSale && (
             <span className="px-2.5 py-1 rounded-md bg-gold-500 text-white text-[10px] font-bold uppercase tracking-wider shadow">
-              Tanlangan
+              VIP
             </span>
           )}
           {product.stock_quantity <= 3 && product.stock_quantity > 0 && (
             <span className="px-2 py-0.5 rounded bg-amber-500/90 text-white text-[9px] font-semibold">
-              Qoldiq: {product.stock_quantity} dona
+              {product.stock_quantity} {t('in_stock')}
             </span>
           )}
         </div>
@@ -84,12 +86,12 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="flex-1 py-2.5 bg-graphite-900/95 dark:bg-gold-500 hover:bg-gold-600 text-white text-xs font-semibold uppercase tracking-wider rounded-xl backdrop-blur-sm shadow-lg flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>{product.stock_quantity > 0 ? "Savatga qo'shish" : "Mavjud emas"}</span>
+            <span>{product.stock_quantity > 0 ? t('add_to_cart') : t('out_of_stock')}</span>
           </button>
           <Link
             href={`/mahsulot/${product.slug}`}
             className="p-2.5 bg-white/90 dark:bg-graphite-800/90 text-graphite-900 dark:text-ivory-100 rounded-xl hover:text-gold-500 backdrop-blur-sm transition-colors"
-            aria-label="Batafsil ko'rish"
+            aria-label={t('quick_view')}
           >
             <Eye className="w-4 h-4" />
           </Link>
@@ -140,10 +142,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           <button
             onClick={() => addItem(product)}
             disabled={product.stock_quantity <= 0}
-            className="sm:hidden p-2 rounded-lg bg-gold-500 text-white disabled:opacity-50"
-            aria-label="Savatga qo'shish"
+            className="sm:hidden px-2.5 py-1.5 rounded-lg bg-gold-500 hover:bg-gold-600 text-white text-[11px] font-semibold flex items-center gap-1.5 disabled:opacity-50 transition-colors shadow"
+            aria-label={t('add_to_cart')}
           >
-            <ShoppingBag className="w-4 h-4" />
+            <ShoppingBag className="w-3.5 h-3.5" />
+            <span>{t('add_to_cart')}</span>
           </button>
         </div>
       </div>

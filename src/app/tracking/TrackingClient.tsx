@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Search, Package, Clock, CheckCircle2, Truck, AlertCircle, ShieldAlert } from 'lucide-react';
+import { Search, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { Order, OrderStatus } from '@/types';
 import { formatUzs, formatDateTime } from '@/lib/utils/format';
+import { useI18n } from '@/context/I18nContext';
 
 interface TrackingClientProps {
   initialOrderNumber?: string;
@@ -12,6 +13,8 @@ interface TrackingClientProps {
 
 export default function TrackingClient({ initialOrderNumber = '' }: TrackingClientProps) {
   const searchParams = useSearchParams();
+  const { t } = useI18n();
+
   const queryId = searchParams.get('id') || initialOrderNumber;
   const queryPhone = searchParams.get('phone') || '';
 
@@ -23,7 +26,7 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
 
   const fetchTracking = async (id: string, ph: string) => {
     if (!id.trim()) {
-      setError('Iltimos, buyurtma raqamini kiriting.');
+      setError(t('track_order_number_label'));
       return;
     }
 
@@ -35,12 +38,12 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
       const data = await res.json();
 
       if (!res.ok || !data.order) {
-        throw new Error(data.error || 'Buyurtma topilmadi yoki telefon raqami mos kelmadi.');
+        throw new Error(data.error || t('track_not_found_desc'));
       }
 
       setOrder(data.order);
     } catch (err: any) {
-      setError(err.message || 'Xatolik yuz berdi');
+      setError(err.message || t('track_not_found_desc'));
       setOrder(null);
     } finally {
       setLoading(false);
@@ -58,12 +61,24 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
     fetchTracking(orderIdInput, phoneInput);
   };
 
+  const getStatusLabel = (key: OrderStatus) => {
+    switch (key) {
+      case 'pending': return t('status_pending');
+      case 'confirmed': return t('status_confirmed');
+      case 'processing': return t('status_processing');
+      case 'shipped': return t('status_shipped');
+      case 'delivered': return t('status_delivered');
+      case 'cancelled': return t('status_cancelled');
+      default: return key;
+    }
+  };
+
   const steps: { key: OrderStatus; label: string }[] = [
-    { key: 'pending', label: 'Qabul qilindi' },
-    { key: 'confirmed', label: 'Tasdiqlandi' },
-    { key: 'processing', label: 'Tayyorlanmoqda' },
-    { key: 'shipped', label: 'Yetkazilmoqda' },
-    { key: 'delivered', label: 'Yetkazildi' },
+    { key: 'pending', label: getStatusLabel('pending') },
+    { key: 'confirmed', label: getStatusLabel('confirmed') },
+    { key: 'processing', label: getStatusLabel('processing') },
+    { key: 'shipped', label: getStatusLabel('shipped') },
+    { key: 'delivered', label: getStatusLabel('delivered') },
   ];
 
   const getStepIndex = (status: OrderStatus) => {
@@ -86,10 +101,10 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
           CHRONOVA Tracking
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-graphite-900 dark:text-ivory-100">
-          Buyurtma Holatini Kuzatish
+          {t('track_title')}
         </h1>
         <p className="text-xs sm:text-sm text-graphite-600 dark:text-ivory-300 mt-2 max-w-md mx-auto">
-          Buyurtma raqamingiz va telefoningiz orqali buyurtmaning joriy holatini vaqtida bilib oling.
+          {t('track_subtitle')}
         </p>
       </div>
 
@@ -98,27 +113,27 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
         <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-12 gap-4">
           <div className="sm:col-span-6">
             <label className="block text-xs font-semibold text-graphite-700 dark:text-ivory-300 mb-1">
-              Buyurtma Raqami *
+              {t('track_order_number_label')}
             </label>
             <input
               type="text"
               required
               value={orderIdInput}
               onChange={(e) => setOrderIdInput(e.target.value)}
-              placeholder="Masalan: CHR-26-88219"
+              placeholder={t('track_order_number_ph')}
               className="w-full bg-ivory-50 dark:bg-surface-dark border border-graphite-300 dark:border-graphite-700 rounded-xl px-4 py-2.5 text-xs font-mono uppercase focus:outline-none focus:border-gold-500"
             />
           </div>
 
           <div className="sm:col-span-4">
             <label className="block text-xs font-semibold text-graphite-700 dark:text-ivory-300 mb-1">
-              Telefon raqami (oxirgi 4 raqami)
+              {t('track_phone_label')}
             </label>
             <input
               type="text"
               value={phoneInput}
               onChange={(e) => setPhoneInput(e.target.value)}
-              placeholder="Masalan: 4567"
+              placeholder="+998 90 123 45 67"
               className="w-full bg-ivory-50 dark:bg-surface-dark border border-graphite-300 dark:border-graphite-700 rounded-xl px-4 py-2.5 text-xs font-mono focus:outline-none focus:border-gold-500"
             />
           </div>
@@ -127,16 +142,16 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow transition-all"
+              className="w-full py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 active:scale-[0.99] text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow transition-all cursor-pointer"
             >
               <Search className="w-4 h-4" />
-              <span>{loading ? '...' : 'Tekshirish'}</span>
+              <span>{loading ? t('track_btn_loading') : t('track_btn_search')}</span>
             </button>
           </div>
         </form>
 
         {error && (
-          <div className="mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2">
+          <div className="mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2 animate-shake">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{error}</span>
           </div>
@@ -150,13 +165,13 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
           <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-surface-darkCard border border-graphite-200 dark:border-graphite-800 shadow-luxury">
             <div className="flex flex-col sm:flex-row justify-between sm:items-center pb-6 border-b border-graphite-100 dark:border-graphite-800 gap-2">
               <div>
-                <span className="text-xs text-graphite-500">Buyurtma Raqami:</span>
+                <span className="text-xs text-graphite-500">{t('confirm_order_number')}</span>
                 <h3 className="font-mono text-lg font-bold text-gold-600 dark:text-gold-400">
                   {order.order_number}
                 </h3>
               </div>
               <div className="text-xs text-graphite-500 font-mono">
-                Sana: {formatDateTime(order.created_at)}
+                {formatDateTime(order.created_at)}
               </div>
             </div>
 
@@ -201,7 +216,7 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
             {order.status_history && order.status_history.length > 0 && (
               <div className="pt-4 border-t border-graphite-100 dark:border-graphite-800">
                 <span className="text-xs uppercase tracking-wider font-semibold text-graphite-500 block mb-3">
-                  Harbiy Yetkazish Tarixi:
+                  {t('track_status_title')}
                 </span>
                 <div className="space-y-2">
                   {order.status_history.map((h, i) => (
@@ -224,19 +239,19 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-6 rounded-2xl bg-white dark:bg-surface-darkCard border border-graphite-200 dark:border-graphite-800 space-y-3 text-xs">
               <h4 className="font-serif text-base font-bold text-graphite-900 dark:text-ivory-100">
-                Yetkazish Ma’lumotlari
+                {t('track_delivery_info')}
               </h4>
               <div className="text-graphite-600 dark:text-ivory-300 space-y-1.5">
-                <p><b>Qabul qiluvchi:</b> {order.customer_name}</p>
-                <p><b>Telefon:</b> {order.customer_phone}</p>
-                <p><b>Manzil:</b> {order.delivery_region}, {order.delivery_city}, {order.delivery_address}</p>
-                <p><b>To‘lov:</b> {order.payment_method === 'cash_on_delivery' ? 'Qabul qilganda naqd' : 'Karta orqali'}</p>
+                <p><b>{t('track_customer_info')}:</b> {order.customer_name}</p>
+                <p><b>{t('chk_phone_label')}:</b> {order.customer_phone}</p>
+                <p><b>{t('chk_address_label')}:</b> {order.delivery_region}, {order.delivery_city}, {order.delivery_address}</p>
+                <p><b>{t('payment_method_title')}:</b> {order.payment_method === 'cash_on_delivery' ? t('chk_pay_cash') : t('payment_card_receipt')}</p>
               </div>
             </div>
 
             <div className="p-6 rounded-2xl bg-white dark:bg-surface-darkCard border border-graphite-200 dark:border-graphite-800 space-y-3 text-xs">
               <h4 className="font-serif text-base font-bold text-graphite-900 dark:text-ivory-100">
-                Buyurtma Qilingan Soatlar
+                {t('track_items_title')}
               </h4>
               <div className="divide-y divide-graphite-100 dark:divide-graphite-800">
                 {order.items.map((item, idx) => (
@@ -250,7 +265,7 @@ export default function TrackingClient({ initialOrderNumber = '' }: TrackingClie
                 ))}
               </div>
               <div className="pt-2 border-t border-graphite-200 dark:border-graphite-800 flex justify-between font-bold text-sm">
-                <span>Jami:</span>
+                <span>{t('cart_total')}:</span>
                 <span className="text-gold-600 dark:text-gold-400 font-mono">{formatUzs(order.total_uzs)}</span>
               </div>
             </div>
